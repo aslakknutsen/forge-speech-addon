@@ -1,3 +1,11 @@
-grammar javax.speech.demo;
+#JSGF V1.0;
 
-public <greeting> = hello;
+
+grammar org.jboss.forge.speech;
+
+public <ForgeCommand> = about | addon build and install | addon install | addon list | addon new command | addon new test | addon remove | addon test setup | build | cat | cd | cdi list alternatives | cdi list decorators | cdi list interceptors | cdi new bean | cdi new conversation | cdi new qualifier | cdi new scope | cdi new stereotype | cdi setup | clear | command list | config list | connection create profile | connection remove profile | constraint add | constraint new annotation | constraint new group | constraint setup | echo | edit | ejb new bean | ejb set class transaction attribute | ejb set method transaction attribute | ejb setup | exit | faces new converter | faces new validator | faces new validator method | faces project stage | faces setup | java new annotation | java new class | java new enum | java new enum const | java new interface | jms setup | jpa generate entities from tables | jpa new entity | jpa new field | jpa new mapped superclass | jpa setup | jstl setup | jta setup | ls | mkdir | open | project add dependencies | project add managed dependencies | project add repository | project has dependencies | project has managed dependencies | project list facets | project new | project remove dependencies | project remove managed dependencies | project remove repository | pwd | rest generate endpoints from entities | rest setup | rm | run | scaffold generate | scaffold setup | service register as serviceloader | servlet setup | soap setup | speech off | speech on | speech speak | touch | track changes | transaction commit | transaction rollback | transaction start | version | voice off | voice on | wait;
+
+public <GreetingCommand> = hello | good day | good evening | greetings;
+
+public <forge> = forge;
+

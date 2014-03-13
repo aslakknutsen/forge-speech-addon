@@ -5,6 +5,9 @@ import javax.speech.recognition.ResultAdapter;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import edu.cmu.sphinx.jsgf.JSGFRuleGrammar;
+import edu.cmu.sphinx.jsgf.rule.JSGFRule;
+
 public class BaiscSpeechTestCase extends ResultAdapter {
 
    @Test @Ignore
@@ -12,6 +15,12 @@ public class BaiscSpeechTestCase extends ResultAdapter {
 
       SpeechRecognizer speech = new SpeechRecognizer();
       speech.start();
+
+
+      JSGFRuleGrammar rules = speech.getGrammar().getRuleGrammar();
+      JSGFRule rule = rules.getRule("ForgeCommand");
+      System.out.println(rule);
+
       Thread.sleep(100000);
    }
 

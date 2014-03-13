@@ -1,6 +1,5 @@
 package org.jboss.forge.speech;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,13 +12,13 @@ import java.util.concurrent.TimeUnit;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
-import javax.sound.sampled.DataLine;
 
 import edu.cmu.sphinx.frontend.util.Microphone;
 import edu.cmu.sphinx.jsgf.JSGFGrammar;
 import edu.cmu.sphinx.jsgf.JSGFRuleGrammar;
 import edu.cmu.sphinx.jsgf.rule.JSGFRule;
 import edu.cmu.sphinx.jsgf.rule.JSGFRuleAlternatives;
+import edu.cmu.sphinx.jsgf.rule.JSGFRuleSequence;
 import edu.cmu.sphinx.jsgf.rule.JSGFRuleToken;
 import edu.cmu.sphinx.recognizer.Recognizer;
 import edu.cmu.sphinx.result.Result;
@@ -48,9 +47,12 @@ public class SpeechRecognizer {
          cm = new ConfigurationManager(getClass().getResource("/forge/forge.config.xml"));
          recognizer = (Recognizer) cm.lookup("recognizer");
          grammar = (JSGFGrammar)cm.lookup("jsgfGrammar");
-
          microphone = (Microphone) cm.lookup("microphone");
       }
+   }
+
+   JSGFGrammar getGrammar() {
+      return grammar;
    }
 
    private void constructGrammar() {
@@ -62,8 +64,19 @@ public class SpeechRecognizer {
          List<JSGFRule> tokens = new ArrayList<>();
          for(String token : command.responsTo()) {
             commandTokenMap.put(token, command.getName());
-            tokens.add(new JSGFRuleToken(token));
-         }
+            JSGFRule rule;
+            if(token.contains(" ")) {
+               List<JSGFRule> subTokens = new ArrayList<>();
+               for(String subToken : token.split(" ")) {
+                  subTokens.add(new JSGFRuleToken(subToken));
+               }
+               rule = new JSGFRuleSequence(subTokens);
+            }
+            else {
+               rule = new JSGFRuleToken(token);
+            }
+            tokens.add(rule);
+          }
           rules.setRule(command.getName(), new JSGFRuleAlternatives(tokens), true);
       }
       try {
@@ -116,6 +129,7 @@ public class SpeechRecognizer {
                if("".equals(best)) {
                   continue;
                }
+               //System.out.println(best);
                RecognizerCommand command = findCommand(best);
                if(command != null) {
                   command.execute(best);
@@ -139,6 +153,7 @@ public class SpeechRecognizer {
          recognizer.deallocate();
       }
       if(microphone != null) {
+         microphone.clear();
          microphone.stopRecording();
       }
       return true;
