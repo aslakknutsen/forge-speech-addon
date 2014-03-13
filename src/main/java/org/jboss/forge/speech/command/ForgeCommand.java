@@ -10,6 +10,7 @@ import org.jboss.forge.addon.ui.context.UIContext;
 import org.jboss.forge.addon.ui.context.UIContextListener;
 import org.jboss.forge.addon.ui.controller.CommandController;
 import org.jboss.forge.addon.ui.controller.CommandControllerFactory;
+import org.jboss.forge.addon.ui.result.Failed;
 import org.jboss.forge.addon.ui.result.Result;
 import org.jboss.forge.furnace.addons.AddonRegistry;
 import org.jboss.forge.speech.RecognizerCommand;
@@ -66,10 +67,12 @@ public class ForgeCommand implements RecognizerCommand, UIContextListener {
       System.out.println(commandName);
 
       try {
-         speech.speak("executing " + commandName.replaceAll("-", " "));
+         String commandWords = commandName.replaceAll("-", " ");
+         speech.speak("executing " + commandWords);
          CommandController commandController = commandControllerFactory.createController(context, runtime, command);
          commandController.initialize();
          Result result = commandController.execute();
+         speech.speak(commandWords + " " + (result instanceof Failed ? "failed":"success"));
       } catch (Exception e) {
          e.printStackTrace();
       }
