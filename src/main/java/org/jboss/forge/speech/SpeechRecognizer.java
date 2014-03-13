@@ -62,7 +62,7 @@ public class SpeechRecognizer {
       JSGFRuleGrammar rules = grammar.getRuleGrammar();
       for(RecognizerCommand command : commands) {
          List<JSGFRule> tokens = new ArrayList<>();
-         for(String token : command.responsTo()) {
+         for(String token : command.respondsTo()) {
             commandTokenMap.put(token, command.getName());
             JSGFRule rule;
             if(token.contains(" ")) {

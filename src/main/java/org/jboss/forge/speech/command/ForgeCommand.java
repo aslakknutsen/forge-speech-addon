@@ -36,7 +36,7 @@ public class ForgeCommand implements RecognizerCommand, UIContextListener {
    }
 
    @Override
-   public String[] responsTo() {
+   public String[] respondsTo() {
       if(commandFactory == null) {
          commandFactory = registry.getServices(CommandFactory.class).get();
       }

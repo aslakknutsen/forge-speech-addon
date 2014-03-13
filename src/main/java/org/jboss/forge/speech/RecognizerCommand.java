@@ -4,7 +4,7 @@ public interface RecognizerCommand {
 
    String getName();
 
-   String[] responsTo();
+   String[] respondsTo();
 
    public void execute(String match);
 }

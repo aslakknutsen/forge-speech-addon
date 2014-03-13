@@ -16,7 +16,7 @@ public class GreetingCommand implements RecognizerCommand {
    }
 
    @Override
-   public String[] responsTo() {
+   public String[] respondsTo() {
       return new String[] {"hello", "good day", "good evening", "greetings"};
    }
 
